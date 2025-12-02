@@ -149,13 +149,12 @@ func Run(opts Options) (*state.State, error) {
 }
 
 func writeInboundFiles(root string, specs map[string]spec.InboundSpec, rendered map[string][]byte) error {
-	dir := filepath.Join(root, "configs")
-	if err := os.MkdirAll(dir, 0o750); err != nil {
+	if err := os.MkdirAll(root, 0o750); err != nil {
 		return err
 	}
 	for key, content := range rendered {
 		specData := specs[key]
-		file := filepath.Join(dir, specData.FileName)
+		file := filepath.Join(root, "02_inbounds_"+specData.FileName)
 		var inbound map[string]any
 		if err := json.Unmarshal(content, &inbound); err != nil {
 			return fmt.Errorf("decode inbound %s: %w", key, err)
