@@ -2,6 +2,24 @@
 
 本仓库提供一个可定制域名的 sing-box + Caddy 部署示例，并在部署完成后自动生成常见协议 (VMess/VLESS) 的订阅链接。
 
+### 环境准备
+
+```
+# install caddy
+
+sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https curl
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+chmod o+r /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+chmod o+r /etc/apt/sources.list.d/caddy-stable.list
+sudo apt update
+sudo apt install caddy
+
+# install sing-box
+
+curl -fsSL https://sing-box.app/install.sh | sh
+```
+
 ### 功能概览
 
 - 使用内置模板渲染 sing-box 入站配置、Caddyfile 以及订阅链接；
@@ -50,13 +68,13 @@ CLI 会把部署记录保存到 `--state` 指定的 JSON 文件 (默认 `sing-bo
 
 ### 常见问题
 
-- **重复执行脚本是否安全？**  
+- **重复执行脚本是否安全？**
   会自动备份现有的 `/etc/caddy/Caddyfile` 与 `/etc/sing-box/config.json`，以 `.bak.<timestamp>` 形式保存，方便回滚。
 
-- **如何查看订阅链接？**  
+- **如何查看订阅链接？**
   执行 `sudo cat /etc/sing-box/subscriptions/<domain>.txt` 即可，里面包含每个协议的分享 URL。
 
-- **如何更新 sing-box？**  
+- **如何更新 sing-box？**
   再次运行脚本并指定 `--sing-box-version`，脚本会下载对应版本并覆盖旧二进制，然后重新渲染配置并重启服务。
 
 如需扩展更多协议，可在 `configs/` 目录新增模板 JSON (包含占位域名 `v9.20140202.xyz`)，脚本会自动检测并生成对应配置与链接。
