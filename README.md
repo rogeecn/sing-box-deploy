@@ -60,3 +60,7 @@ CLI 会把部署记录保存到 `--state` 指定的 JSON 文件 (默认 `sing-bo
   再次运行脚本并指定 `--sing-box-version`，脚本会下载对应版本并覆盖旧二进制，然后重新渲染配置并重启服务。
 
 如需扩展更多协议，可在 `configs/` 目录新增模板 JSON (包含占位域名 `v9.20140202.xyz`)，脚本会自动检测并生成对应配置与链接。
+
+### CI/CD
+
+仓库包含 `.github/workflows/release.yml`，在 `main` 分支有新的 push 时会自动执行 `go test`, `go build`，并以提交哈希为 tag (`auto-<sha>`) 发布预发行版，附带打包后的 `sing-box-deploy` 可执行文件。无需手动干预即可获取最新二进制。
