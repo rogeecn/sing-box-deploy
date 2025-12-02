@@ -156,7 +156,18 @@ func writeInboundFiles(root string, specs map[string]spec.InboundSpec, rendered 
 	for key, content := range rendered {
 		specData := specs[key]
 		file := filepath.Join(dir, specData.FileName)
-		if err := os.WriteFile(file, append(content, '\n'), 0o640); err != nil {
+		var inbound map[string]any
+		if err := json.Unmarshal(content, &inbound); err != nil {
+			return fmt.Errorf("decode inbound %s: %w", key, err)
+		}
+		wrapper := map[string]any{
+			"inbounds": []any{inbound},
+		}
+		encoded, err := json.MarshalIndent(wrapper, "", "  ")
+		if err != nil {
+			return fmt.Errorf("wrap inbound %s: %w", key, err)
+		}
+		if err := os.WriteFile(file, append(encoded, '\n'), 0o640); err != nil {
 			return fmt.Errorf("write %s: %w", file, err)
 		}
 	}
@@ -164,7 +175,7 @@ func writeInboundFiles(root string, specs map[string]spec.InboundSpec, rendered 
 }
 
 func writeSingBoxConfig(root string) error {
-	configPath := filepath.Join(root, "config.json")
+	configPath := filepath.Join(root, "00_common.json")
 	payload := map[string]any{
 		"log": map[string]any{
 			"level":     "info",

@@ -60,11 +60,11 @@ CLI 会把部署记录保存到 `--state` 指定的 JSON 文件 (默认 `sing-bo
 
 部署完成后会生成：
 
-- `sing-box` 主配置：`<root>/config.json`（仅保留日志/出站/路由），入站碎片位于 `<root>/configs/`；
+- `sing-box` 主配置：`<root>/00_common.json`（仅保留日志/出站/路由），入站碎片位于 `<root>/configs/`，每个文件都是 `{"inbounds": [...]}` 结构，可直接被 `sing-box -C` 自动加载；
 - `Caddyfile`：`--caddy` 指定位置；
 - 订阅链接：`--subscriptions` 目录中的 `<domain>.txt`；`url` 子命令也会将每条链接对应的二维码 URL 打印出来。
 
-运行服务时可使用 `sing-box -C <root>/configs run -c <root>/config.json`，sing-box 会自动加载 `<root>/configs` 目录下的全部入站配置文件。
+运行服务时可使用 `sing-box -C <root>/configs run -c <root>/00_common.json`，sing-box 会自动加载 `<root>/configs` 目录下的全部入站配置文件。
 
 ### 常见问题
 

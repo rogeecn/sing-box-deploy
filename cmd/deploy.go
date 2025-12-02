@@ -58,7 +58,7 @@ var deployCmd = &cobra.Command{
 			return err
 		}
 		cmd.Printf("Deployed %d inbounds for %s\n", len(st.Inbounds), st.Domain)
-		cmd.Printf("sing-box config: %s\n", fmt.Sprintf("%s/config.json", st.RootDir))
+		cmd.Printf("sing-box config: %s\n", fmt.Sprintf("%s/00_common.json", st.RootDir))
 		cmd.Printf("Caddyfile: %s\n", st.CaddyFile)
 		cmd.Printf("Subscriptions: %s\n", st.SubscriptionFile)
 		return nil
