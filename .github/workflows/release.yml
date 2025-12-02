@@ -25,12 +25,11 @@ jobs:
 
       - name: Build binary
         run: |
-          mkdir -p dist
-          go build -o dist/sing-box-deploy ./...
+          go build -o sing-box-deploy .
 
       - name: Package artifact
         run: |
-          tar -czf dist/sing-box-deploy-linux-amd64.tar.gz -C dist sing-box-deploy
+          tar -czf sing-box-deploy-linux-amd64.tar.gz sing-box-deploy
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -39,6 +38,6 @@ jobs:
           name: Automated build ${{ github.sha }}
           draft: false
           prerelease: true
-          files: dist/sing-box-deploy-linux-amd64.tar.gz
+          files: sing-box-deploy-linux-amd64.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
