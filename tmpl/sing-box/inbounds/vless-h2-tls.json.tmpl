@@ -1,0 +1,25 @@
+{{- $root := . -}}{{- with index .Inbounds "vless-h2-tls" }}
+{
+  "tag": "{{ .Tag }}",
+  "type": "vless",
+  "listen": "{{ or .Listen "127.0.0.1" }}",
+  "listen_port": {{ .ListenPort }},
+  "users": [
+    {
+      "uuid": "{{ .UUID }}"
+    }
+  ],
+  "tls": {
+    "enabled": true,
+    "key_path": "{{ or $root.TLSKeyPath "/etc/sing-box/bin/tls.key" }}",
+    "certificate_path": "{{ or $root.TLSCertPath "/etc/sing-box/bin/tls.cer" }}"
+  },
+  "transport": {
+    "type": "http",
+    "path": "{{ or .Path (printf "/%s" .UUID) }}",
+    "headers": {
+      "host": "{{ or .Host $root.Domain }}"
+    }
+  }
+}
+{{- end }}

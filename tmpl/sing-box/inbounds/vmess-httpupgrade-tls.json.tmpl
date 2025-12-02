@@ -1,0 +1,20 @@
+{{- $root := . -}}{{- with index .Inbounds "vmess-httpupgrade-tls" }}
+{
+  "tag": "{{ .Tag }}",
+  "type": "vmess",
+  "listen": "{{ or .Listen "127.0.0.1" }}",
+  "listen_port": {{ .ListenPort }},
+  "users": [
+    {
+      "uuid": "{{ .UUID }}"
+    }
+  ],
+  "transport": {
+    "type": "httpupgrade",
+    "path": "{{ or .Path (printf "/%s" .UUID) }}",
+    "headers": {
+      "host": "{{ or .Host $root.Domain }}"
+    }
+  }
+}
+{{- end }}

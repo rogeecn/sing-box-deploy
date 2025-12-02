@@ -1,0 +1,17 @@
+{{- $domain := .Domain -}}
+{
+    admin off
+    http_port 80
+    https_port 443
+}
+
+{{ $domain }}:443 {
+    {{- if .Email }}
+    tls {{ .Email }}
+    {{- end }}
+    {{- range $name, $spec := .Inbounds }}
+    @{{ $name }} path {{ or $spec.Path (printf "/%s" $spec.UUID) }}*
+    reverse_proxy @{{ $name }} 127.0.0.1:{{ $spec.ListenPort }}
+
+    {{- end }}
+}

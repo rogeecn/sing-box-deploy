@@ -1,0 +1,21 @@
+{{- $root := . -}}{{- with index .Inbounds "vless-ws-tls" }}
+{
+  "tag": "{{ .Tag }}",
+  "type": "vless",
+  "listen": "{{ or .Listen "127.0.0.1" }}",
+  "listen_port": {{ .ListenPort }},
+  "users": [
+    {
+      "uuid": "{{ .UUID }}"
+    }
+  ],
+  "transport": {
+    "type": "ws",
+    "path": "{{ or .Path (printf "/%s" .UUID) }}",
+    "headers": {
+      "host": "{{ or .Host $root.Domain }}"
+    },
+    "early_data_header_name": "Sec-WebSocket-Protocol"
+  }
+}
+{{- end }}

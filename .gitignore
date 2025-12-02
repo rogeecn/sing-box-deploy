@@ -1,0 +1,5 @@
+.gocache
+sing-box-state.json
+tmp/
+configs/
+config.md
