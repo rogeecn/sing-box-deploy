@@ -10,7 +10,6 @@ import (
 )
 
 var (
-	deployDomain  string
 	deployEmail   string
 	deployTypes   []string
 	deployRootDir string
@@ -20,11 +19,13 @@ var (
 )
 
 var deployCmd = &cobra.Command{
-	Use:   "deploy",
+	Use:   "deploy <domain>",
 	Short: "Render sing-box + Caddy configs for the given domain",
+	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		if strings.TrimSpace(deployDomain) == "" {
-			return fmt.Errorf("--domain is required")
+		domain := strings.ToLower(strings.TrimSpace(args[0]))
+		if domain == "" {
+			return fmt.Errorf("domain is required")
 		}
 		rootDir := deployRootDir
 		if rootDir == "" {
@@ -41,10 +42,10 @@ var deployCmd = &cobra.Command{
 
 		email := strings.TrimSpace(deployEmail)
 		if email == "" {
-			email = fmt.Sprintf("info@%s", strings.ToLower(deployDomain))
+			email = fmt.Sprintf("info@%s", domain)
 		}
 		opts := deployer.Options{
-			Domain:          strings.ToLower(deployDomain),
+			Domain:          domain,
 			Email:           email,
 			InboundKeys:     deployTypes,
 			RootDir:         rootDir,
@@ -67,7 +68,6 @@ var deployCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(deployCmd)
-	deployCmd.Flags().StringVarP(&deployDomain, "domain", "d", "", "domain to deploy (required)")
 	deployCmd.Flags().StringVar(&deployEmail, "email", "", "email used for TLS certificate registration")
 	deployCmd.Flags().StringSliceVar(&deployTypes, "type", nil, "inbound types to enable (repeatable)")
 	deployCmd.Flags().StringVar(&deployRootDir, "root", "", "sing-box root directory (default /etc/sing-box)")

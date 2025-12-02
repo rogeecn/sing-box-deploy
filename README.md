@@ -41,13 +41,12 @@ curl -fsSL https://sing-box.app/install.sh | sh
 ```bash
 git clone https://example.com/sing-box-deploy.git
 cd sing-box-deploy
-go run . deploy --domain your.domain.com --email admin@your.domain.com
+go run . deploy your.domain.com --email admin@your.domain.com
 ```
 
 主要子命令：
 
-- `deploy`：渲染 sing-box 入站、`config.json`、Caddyfile 以及订阅文件；若 `<root>/tls.key|tls.cer` 缺失，会自动执行 `sing-box generate tls-keypair <domain> -m 1024` 生成自签证书，并在模板中引用实际路径，同时为每个入站随机分配高位端口。常用参数：
-  - `--domain/-d` (必填)：目标域名。
+- `deploy <domain>`：渲染 sing-box 入站、`config.json`、Caddyfile 以及订阅文件；若 `<root>/tls.key|tls.cer` 缺失，会自动执行 `sing-box generate tls-keypair <domain> -m 1024` 生成自签证书，并在模板中引用实际路径，同时为每个入站随机分配高位端口。常用参数：
   - `--type` (可重复)：指定入站类型，默认全部 (如 `vless-ws-tls`、`vmess-h2-tls` 等)。
   - `--root`：sing-box 目录 (默认 `/etc/sing-box`)。
   - `--caddy`：Caddyfile 输出路径 (默认 `/etc/caddy/Caddyfile`)。
