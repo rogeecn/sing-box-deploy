@@ -39,9 +39,13 @@ var deployCmd = &cobra.Command{
 			caddyFile = "/etc/caddy/Caddyfile"
 		}
 
+		email := strings.TrimSpace(deployEmail)
+		if email == "" {
+			email = fmt.Sprintf("info@%s", strings.ToLower(deployDomain))
+		}
 		opts := deployer.Options{
 			Domain:          strings.ToLower(deployDomain),
-			Email:           deployEmail,
+			Email:           email,
 			InboundKeys:     deployTypes,
 			RootDir:         rootDir,
 			CaddyFile:       caddyFile,
