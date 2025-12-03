@@ -11,7 +11,7 @@
     {{- end }}
 
     {{ range $name, $spec := .Inbounds }}
-    @{{ $name }} path {{ or $spec.Path (printf "/%s" $spec.UUID) }}*
-    reverse_proxy @{{ $name }} 127.0.0.1:{{ $spec.ListenPort }}
+    # @{{ $name }}
+    reverse_proxy {{ or $spec.Path (printf "/%s" $spec.UUID) }} 127.0.0.1:{{ $spec.ListenPort }}
     {{ end }}
 }
