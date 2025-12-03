@@ -14,6 +14,7 @@ var ErrNotFound = errors.New("state file not found")
 type Inbound struct {
 	Key        string `json:"key"`
 	Tag        string `json:"tag"`
+	Name       string `json:"name"`
 	Protocol   string `json:"protocol"`
 	Transport  string `json:"transport"`
 	ListenPort int    `json:"listen_port"`

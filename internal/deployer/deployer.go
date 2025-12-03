@@ -19,6 +19,7 @@ type Options struct {
 	Domain          string
 	Email           string
 	InboundKeys     []string
+	ProfileName     string
 	RootDir         string
 	CaddyFile       string
 	SubscriptionDir string
@@ -73,6 +74,9 @@ func Run(opts Options) (*state.State, error) {
 		if err != nil {
 			return nil, err
 		}
+		if opts.ProfileName != "" {
+			specData.Name = opts.ProfileName
+		}
 		inbounds[key] = specData
 	}
 
@@ -118,6 +122,7 @@ func Run(opts Options) (*state.State, error) {
 		shareLinks = append(shareLinks, state.Inbound{
 			Key:        key,
 			Tag:        specData.Tag,
+			Name:       specData.Name,
 			Protocol:   specData.Protocol,
 			Transport:  specData.Transport,
 			ListenPort: specData.ListenPort,

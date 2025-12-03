@@ -24,7 +24,7 @@ func BuildLink(inbound spec.InboundSpec, domain string) (string, error) {
 func buildVMess(inbound spec.InboundSpec, domain string) string {
 	payload := map[string]string{
 		"v":    "2",
-		"ps":   inbound.Tag,
+		"ps":   inbound.Name,
 		"add":  domain,
 		"port": "443",
 		"id":   inbound.UUID,
@@ -53,7 +53,7 @@ func buildVLESS(inbound spec.InboundSpec, domain string) string {
 		inbound.UUID,
 		domain,
 		strings.Join(query, "&"),
-		inbound.Tag,
+		inbound.Name,
 	)
 }
 

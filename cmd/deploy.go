@@ -20,6 +20,7 @@ var (
 	deployCaddy   string
 	deploySubDir  string
 	deployBinPath string
+	deployProfile string
 )
 
 var deployCmd = &cobra.Command{
@@ -61,6 +62,7 @@ var deployCmd = &cobra.Command{
 			Domain:          domain,
 			Email:           email,
 			InboundKeys:     selectedTypes,
+			ProfileName:     deployProfile,
 			RootDir:         rootDir,
 			CaddyFile:       caddyFile,
 			SubscriptionDir: subDir,
@@ -97,6 +99,7 @@ func init() {
 	rootCmd.AddCommand(deployCmd)
 	deployCmd.Flags().StringVar(&deployEmail, "email", "", "email used for TLS certificate registration")
 	deployCmd.Flags().StringSliceVar(&deployTypes, "type", nil, "inbound types to enable (repeatable)")
+	deployCmd.Flags().StringVar(&deployProfile, "name", "", "profile name shown in share links (defaults to domain)")
 	deployCmd.Flags().StringVar(&deployRootDir, "root", "", "sing-box root directory (default /etc/sing-box)")
 	deployCmd.Flags().StringVar(&deployCaddy, "caddy", "", "Caddyfile output path (default /etc/caddy/Caddyfile)")
 	deployCmd.Flags().

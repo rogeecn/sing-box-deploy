@@ -13,6 +13,7 @@ import (
 type InboundSpec struct {
 	Key        string `json:"key"`
 	Tag        string `json:"tag"`
+	Name       string `json:"name"`
 	FileName   string `json:"file_name"`
 	Protocol   string `json:"protocol"`
 	Listen     string `json:"listen"`
@@ -90,9 +91,13 @@ func BuildSpec(key, domain string) (InboundSpec, error) {
 	if err != nil {
 		return InboundSpec{}, err
 	}
+	name := fmt.Sprintf("%s-%s", strings.ToUpper(def.Protocol), strings.ToUpper(def.Transport))
+	name = fmt.Sprintf("%s-%s", name, domain)
+
 	return InboundSpec{
 		Key:        key,
-		Tag:        tag,
+		Tag:        strings.TrimSuffix(tag, ".json"),
+		Name:       name,
 		FileName:   tag,
 		Protocol:   def.Protocol,
 		Listen:     "127.0.0.1",
