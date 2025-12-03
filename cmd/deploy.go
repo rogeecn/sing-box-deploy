@@ -85,7 +85,8 @@ var deployCmd = &cobra.Command{
 			if _, ok := keySet[inbound.Key]; !ok {
 				continue
 			}
-			cmd.Printf("- %s -> %s\n", inbound.Tag, inbound.ShareURL)
+			cmd.Printf("# %s\n", inbound.Tag)
+			cmd.Printf("%s\n", inbound.ShareURL)
 		}
 
 		return nil
@@ -98,8 +99,10 @@ func init() {
 	deployCmd.Flags().StringSliceVar(&deployTypes, "type", nil, "inbound types to enable (repeatable)")
 	deployCmd.Flags().StringVar(&deployRootDir, "root", "", "sing-box root directory (default /etc/sing-box)")
 	deployCmd.Flags().StringVar(&deployCaddy, "caddy", "", "Caddyfile output path (default /etc/caddy/Caddyfile)")
-	deployCmd.Flags().StringVar(&deploySubDir, "subscriptions", "", "directory for subscription files (default <root>/subscriptions)")
-	deployCmd.Flags().StringVar(&deployBinPath, "sing-box-bin", "sing-box", "path to sing-box binary for helper commands")
+	deployCmd.Flags().
+		StringVar(&deploySubDir, "subscriptions", "", "directory for subscription files (default <root>/subscriptions)")
+	deployCmd.Flags().
+		StringVar(&deployBinPath, "sing-box-bin", "sing-box", "path to sing-box binary for helper commands")
 }
 
 func promptInboundSelection(cmd *cobra.Command) ([]string, error) {

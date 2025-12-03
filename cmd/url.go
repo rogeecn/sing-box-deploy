@@ -3,7 +3,6 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"net/url"
 	"strings"
 
 	"github.com/rogeecn/sing-box-deploy/internal/state"
@@ -43,10 +42,7 @@ var urlCmd = &cobra.Command{
 			return nil
 		}
 		for _, inbound := range matches {
-			cmd.Printf("%s -> %s\n", inbound.Tag, inbound.ShareURL)
-			escaped := url.QueryEscape(inbound.ShareURL)
-			qrURL := fmt.Sprintf("https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=%s", escaped)
-			cmd.Printf("QR: %s\n\n", qrURL)
+			cmd.Printf("%s\n%s\n\n", inbound.Tag, inbound.ShareURL)
 		}
 		return nil
 	},
